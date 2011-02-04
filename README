@@ -1,0 +1,78 @@
+RSS parser, optimized for feeds of torrent trackers.
+
+This RSS parser is used for torrent RSS feeds available on many trackers.
+It uses filters to find the right torrent. Best way to use this script
+is to put it in cronjob and call it every XX minutes (I use 15).
+
+You can define filters directly on the command line or in files. Defining
+filters in files is much easier to administer.  Filters are regular 
+expressions and they are not case sensitive.
+
+Every filter is matching from the begining of the torrent title. That 
+means that filter "TvShow" will find a torrent "TvShow.S01E01" but it 
+will not find "TheTvShow".
+
+Use ".*TvShow" to match "TheTvShow" and "TvShow" with the same filter.
+
+TV Show names in torrents have usually this syntax: TvShowName.S01E01
+S01 stands for Season 1, E01 for Episode 1. 
+
+Examples: 
+
+Match all episodes of the 3rd season: "TvShowName.S03E\d\d"
+Match episodes 10-15 of the 4th seaons: "TvShowName.S04E1[0-5]
+Match "GreatMovie" in 1080p format: "GreatMovie.*1080p"
+
+  Short Regular Expression Help:
+  .  = any charcter
+  .* = any number (>=0) of any characters (really any characters)
+  ?  = 0 or 1 characters before "?". Example: M? (0 or 1 M)
+  +  = 1 or more characters before "+": Example: M+ (at least one M)
+
+  Info:
+  Filters are regular expressions and you should escape "special" characters
+  like ?*$^+ (to match "What?" in a torrent title you should use "What\?").
+   
+
+
+Important:
+Matched names are save in the history file. This history file is being
+used to avoid downloading torrent for the same content more than once.
+
+If you put only "TvShowName" as a filter and if TvShowName has more
+episodes it will be downloaded only once because "TvShowName" will be
+saved in the history file. That's why you should use season and episode
+numbers in filters for tv shows (like in the examples from above).
+
+
+Matched "Download filters" will download torrents.
+Matched "Inform filters" will run "inform-command" (see --help or below)
+
+Have fun!
+
+
+
+Syntax: ./rss-torrent.pl [OPTION]... [URL|PATH]
+
+Options:
+ -d,   --download-filter=FILTER           search terms or regexp. multiple usage possible (-d FILTER -d FILTER).
+                                          it matches from the beginning of the title, case insensitive
+ -X,   --download-filters-file=FILE       file containing search terms/regexp (one per line)
+
+ -i,   --inform-filter=FILTER             search terms or regexp. multiple usage possible (-i FILTER -i FILTER).
+                                          it matches from the beginning of the title, case insensitive
+ -Y,   --inform-filters-file=FILE         file containing search terms/regexp (one per line)
+       --inform-command=COMMAND           calls it when inform filter was matched. %TITLE% in COMMAND is replaced with
+                                          formatted torrent title
+
+ -t,   --torrent-save-dir=DIR             where to save downloaded torrents
+ -h,   --history-file=FILTER              file for saving names of downloaded torrents to avoid downloading files twice
+       --proxy=PROXY[:PORT]               proxy for downloading torrents
+       --dry-run                          runs script without downloading torrents or saving in history
+
+Site specific options:
+       --find-alternative-torrent         [isohunt] search rss for the same torrents in better quality and more peers
+                                          instead of downloading the first torrent found
+       --bithdtv-passkey=PASSKEY          [bit-hdtv] your bit-hdtv passkey, used to repair torrents from bit-hdtv feed
+ -h,   --help                             show this help
+
