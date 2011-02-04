@@ -1,0 +1,10 @@
+# RegExp matches from the beginning of <title></title>.
+# filters on top have higher priority
+# filters are case-insensitive
+# filters are being used for history => only matched part of the title is saved 
+
+# match season 01 (any episode)
+ShowName.S01E\d\d
+
+# or like this to match any season/episode
+ShowName.S\d\dE\d\d
