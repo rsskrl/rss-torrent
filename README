@@ -64,8 +64,10 @@ Matched "Inform filters" will run "inform-command" (see --help or below)
 
 
 Encoding:
-If you get errors from XML Parser about missing .enc files, download
-http://uucode.com/xml/perl/enc.zip and unpack it in this script folder.
+If you get errors from XML Parser about missing .enc files, download 
+language pack from http://uucode.com/xml/perl/enc.zip and unpack it in this 
+script folder. XML::Parses supports only iso-8859-1 (http://uucode.com/xml/perl/)
+and this language pack add support for other encodings (windows-1251 etc).
 
 
 Cronjob examples:
