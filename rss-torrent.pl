@@ -61,6 +61,7 @@ use XML::Simple;
 use LWP::UserAgent;
 use Getopt::Long;
 use Data::Dumper;
+use utf8;
 
 my (@download_filters, @inform_filters, $dry_run, $help);
 GetOptions(

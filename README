@@ -2,7 +2,7 @@ RSS parser, optimized for feeds of torrent trackers.
 
 This RSS parser is used for torrent RSS feeds available on many trackers.
 It uses filters to find the right torrent. Best way to use this script
-is to put it in cronjob and call it every XX minutes (I use 15).
+is to put it in cronjob and call it every XX minutes.
 
 You can define filters directly on the command line or in files. Defining
 filters in files is much easier to administer.  Filters are regular 
@@ -34,7 +34,6 @@ Match "GreatMovie" in 1080p format: "GreatMovie.*1080p"
   like ?*$^+ (to match "What?" in a torrent title you should use "What\?").
    
 
-
 Important:
 Matched names are saved in the history file. This history file is used
 to avoid downloading torrent for the same content more than once.
@@ -44,23 +43,38 @@ episodes it will be downloaded only once because "TvShowName" will be
 saved in the history file. That's why you should use season and episode
 numbers in filters for tv shows (like in the examples from above).
 
-Example: There are two torrents in the feed:
+
+Here is an example for filter creation. Let's say there are two torrents in 
+the feed:
 TvShow.S01E05.HDTV.XviD-xx1
 TvShow.S01E05.HDTV.720p-abc
 
 If your filter is only "TvShow", first match will be downloaded and the
 history file will contain only "TvShow". And that means that "TvShow" will
-never be downloaded again. You should use "TvShow.S\d\dE\d\d" to
-download 720p version of TvShow. History file will contain "TvShow.S01E05"
-and this episode will be download only once. This will not affect other
-episodes because episode 06 (TvShow.S01E06) does not match history file.
+never be downloaded again. You should use "TvShow.S\d\dE\d\d" to download 
+every episode of TvShow. History file will contain "TvShow.S01E05" and
+this episode will be downloaded only once. This will not affect other
+episodes (in the future) because episode 06 (TvShow.S01E06) does not match 
+history file.
 
 
+Info:
 Matched "Download filters" will download torrents.
 Matched "Inform filters" will run "inform-command" (see --help or below)
 
-Have fun!
 
+Encoding:
+If you get errors from XML Parser about missing .enc files, download
+http://uucode.com/xml/perl/enc.zip and unpack it in this script folder.
+
+
+Cronjob examples:
+# run every 15 minutes 
+*/15 * * * * /home/torrents/rss-torrent.pl -d='MyShow.S\d\dE\d\d' http://tracker.com/rssfeed.php
+
+
+
+Have fun!
 
 
 Syntax: ./rss-torrent.pl [OPTION]... [URL|PATH]
