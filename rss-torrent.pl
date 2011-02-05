@@ -36,7 +36,7 @@ $download_filters_file = '/home/torrents/rss.download_filters';
 # %TITLE% = matched title of the torrent
 # %FORMATTED_TITLE = formatted (nice) matched title
 $inform_filters_file = '/home/torrents/rss.inform_filters';
-$inform_command = 'prowl.pl -event="rss matched" -notification="%FORMATTED_TITLE%"';
+#$inform_command = 'prowl.pl -event="rss matched" -notification="%FORMATTED_TITLE%"';
 
 #############################################################################
 # some additional settings
