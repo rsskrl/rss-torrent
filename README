@@ -36,13 +36,24 @@ Match "GreatMovie" in 1080p format: "GreatMovie.*1080p"
 
 
 Important:
-Matched names are save in the history file. This history file is being
-used to avoid downloading torrent for the same content more than once.
+Matched names are saved in the history file. This history file is used
+to avoid downloading torrent for the same content more than once.
 
 If you put only "TvShowName" as a filter and if TvShowName has more
 episodes it will be downloaded only once because "TvShowName" will be
 saved in the history file. That's why you should use season and episode
 numbers in filters for tv shows (like in the examples from above).
+
+Example: There are two torrents in the feed:
+TvShow.S01E05.HDTV.XviD-xx1
+TvShow.S01E05.HDTV.720p-abc
+
+If your filter is only "TvShow", first match will be downloaded and the
+history file will contain only "TvShow". And that means that "TvShow" will
+never be downloaded again. You should use "TvShow.S\d\dE\d\d" to
+download 720p version of TvShow. History file will contain "TvShow.S01E05"
+and this episode will be download only once. This will not affect other
+episodes because episode 06 (TvShow.S01E06) does not match history file.
 
 
 Matched "Download filters" will download torrents.
