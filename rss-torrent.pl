@@ -59,6 +59,7 @@ use warnings;
 use strict;
 use XML::Simple;
 use LWP::UserAgent;
+use HTTP::Message;
 use Getopt::Long;
 use Data::Dumper;
 use utf8;
@@ -153,6 +154,7 @@ die('Dir for saving torrents does not exist.') if ! -d $torrent_save_dir;
 # get history
 my @history = read_file($history_file);
 
+#print Dumper @history;
 
 print "------------------------\n".localtime();
 
@@ -177,8 +179,8 @@ foreach (@torrents) {
 
 	# check history
 	my $match = lc($1);
-	$match =~s/(\s{1,})/\./g;
-	if (grep { $match eq $_ } @history) {
+	$match =~s/([\s]{1,})/\./g;
+	if (grep /^\Q$match\E$/i, @history) {
 		print "Found in history\n";
 		next;
 	}
@@ -232,7 +234,9 @@ foreach (@torrents) {
 			$link .= $torrent_title; 
 		}
 
-		my $response = $get->get($link);
+		my $response = $get->get($link, 
+			'Accept-Encoding' => HTTP::Message::decodable 
+		);
 
 		# skip if download error
 		if (!$response->is_success) {
@@ -242,7 +246,7 @@ foreach (@torrents) {
 
 
 		# if downloaded content is not torrent file
-		if ($response->header('content-type') !~/^application\/x-(bit)?torrent$/) {
+		if ($response->header('content-type') !~/^application\/(x-(bit)?torrent|octet-stream)$/) {
 			print "Wrong Content-Type\n".$response->header('content-type');
 			next;
 		}
@@ -258,7 +262,7 @@ foreach (@torrents) {
 		}
 		$filename =~s/\s//g;
 
-		my $content = $response->content;
+		my $content = $response->decoded_content;
 
 		# bit-hdtv.com: repair tracker announce url in the torrent file -> insert passkey
 		if ($link =~ /^https?:\/\/(www\.)?bit-hdtv\.com\//i) {
