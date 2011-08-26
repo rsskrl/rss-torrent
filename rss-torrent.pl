@@ -260,7 +260,7 @@ foreach (@torrents) {
 		} else {
 			$filename = $match.'.torrent';
 		}
-		$filename =~s/\s//g;
+		$filename =~s/[^A-Za-z0-9\.\-_,]//g;
 
 		my $content = $response->decoded_content;
 
